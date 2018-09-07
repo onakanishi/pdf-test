@@ -1,0 +1,33 @@
+#!/bin/bash
+
+umask 0002
+
+script_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+application_dir=$( cd "$( dirname "$script_dir" )" && pwd )
+
+apt-get update
+RETVAL=$?
+if [ $RETVAL -ne 0 ]; then
+exit $RETVAL
+fi
+
+apt-get -y install nodejs
+RETVAL=$?
+if [ $RETVAL -ne 0 ]; then
+exit $RETVAL
+fi
+
+apt-get -y install npm
+RETVAL=$?
+if [ $RETVAL -ne 0 ]; then
+exit $RETVAL
+fi
+
+supervisorctl restart apache2
+RETVAL=$?
+if [ $RETVAL -ne 0 ]; then
+exit $RETVAL
+fi
+
+exit 0
+
